@@ -31,6 +31,5 @@ __pycache__/
 /TradConf.conf
 
 /build/
-/setup.py
 /setup.cfg
 /pyproject.toml
