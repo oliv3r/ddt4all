@@ -21,8 +21,10 @@ elm_failed = False
 # KWP2000 Slow init
 opt_si = False
 report_data = True
-ecus_dir = "ecus/"
-graphics_dir = "graphics/"
+ecus_dir = "./ecus/"
+graphics_dir = "./graphics/"
+json_dir = "./json/"
+logs_dir = "./logs/"
 last_error = ""
 main_window = None
 ecu_scanner = None

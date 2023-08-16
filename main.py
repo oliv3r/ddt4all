@@ -23,6 +23,7 @@ import options
 import parameters
 import sniffer
 import version
+from xdg import BaseDirectory as xdg
 
 __author__ = version.__author__
 __copyright__ = version.__copyright__
@@ -174,7 +175,7 @@ class Ecu_list(widgets.QWidget):
         self.list.model().setHeaderData(7, core.Qt.Horizontal, _('Projets'))
         stored_ecus = {"Custom": []}
 
-        custom_files = glob.glob("./json/*.json.targets")
+        custom_files = glob.glob(options.json_dir + "/*.json.targets")
 
         for cs in custom_files:
             f = open(cs, "r")
@@ -290,9 +291,7 @@ class Main_widget(widgets.QMainWindow):
         super(Main_widget, self).__init__(parent)
         self.setIcon()
         if not options.simulation_mode:
-            if not os.path.exists("./logs"):
-                os.mkdir("./logs")
-            self.screenlogfile = open("./logs/screens.txt", "at", encoding="utf-8")
+            self.screenlogfile = open(options.logs_dir + "/screens.txt", "at", encoding="utf-8")
         else:
             self.screenlogfile = None
 
@@ -869,7 +868,7 @@ class Main_widget(widgets.QMainWindow):
 
     def newEcu(self):
         filename_tuple = widgets.QFileDialog.getSaveFileName(self, _("Save ECU (keep '.json' extension)"),
-                                                             "./json/myecu.json",
+                                                             options.json_dir + "/myecu.json",
                                                              "*.json")
 
         filename = str(filename_tuple[0])
@@ -878,7 +877,7 @@ class Main_widget(widgets.QMainWindow):
             return
 
         basename = os.path.basename(utf8(filename))
-        filename = os.path.join("./json", basename)
+        filename = os.path.join(options.json_dir, basename)
         ecufile = ecu.Ecu_file(None)
         layout = open(filename + ".layout", "w")
         layout.write('{"screens": {}, "categories":{"Category":[]} }')
@@ -1496,15 +1495,23 @@ if __name__ == '__main__':
     app.setStyle("plastic")
 
     ecudirfound = False
-    if os.path.exists(options.ecus_dir + '/eculist.xml'):
+    for ecu_dir in xdg.load_data_paths("ddt4all/ecus"):
+        if os.path.exists(ecu_dir + '/eculist.xml'):
+            print(_("Using DDT database:"), ecu_dir)
+            options.ecus_dir = ecu_dir
+            ecudirfound = True
+
+    if not ecudirfound and os.path.exists(options.ecus_dir + '/eculist.xml'):
         print(_("Using custom DDT database"))
         ecudirfound = True
 
-    if not os.path.exists("./json"):
-        os.mkdir("./json")
+    options.json_dir = xdg.save_config_path("ddt4all/json")
+    if not os.path.exists(options.json_dir):
+        os.mkdir(options.json_dir)
 
-    if not os.path.exists("./logs"):
-        os.mkdir("./logs")
+    options.logs_dir = xdg.save_cache_path("ddt4all/logs")
+    if not os.path.exists(options.logs_dir):
+        os.mkdir(options.logs_dir)
 
     pc = portChooser()
     nok = True

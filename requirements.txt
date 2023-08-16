@@ -4,3 +4,4 @@ PyQt5-stubs==5.15.6.0
 pyusb==1.2.1
 crcmod==1.7
 pyserial==3.5
+pyxdg>=0.26.0

@@ -577,12 +577,12 @@ class ELM:
                 # Try one other speed ...
                 continue
 
-            if not os.path.exists("./logs"):
-                os.mkdir("./logs")
+            if not os.path.exists(options.logs_dir):
+                os.mkdir(options.logs_dir)
 
             if len(options.log) > 0:
-                self.lf = open("./logs/elm_" + options.log, "at")
-                self.vf = open("./logs/ecu_" + options.log, "at")
+                self.lf = open(options.logs_dir + "/elm_" + options.log, "at")
+                self.vf = open(options.logs_dir + "/ecu_" + options.log, "at")
 
             self.lastCMDtime = 0
             self.ATCFC0 = options.opt_cfc0

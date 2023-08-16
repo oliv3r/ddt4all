@@ -831,7 +831,7 @@ class Ecu_file:
                 data += ".json"
 
         if isfile and '.json' in data:
-            data2 = "./json/" + os.path.basename(data)
+            data2 = options.json_dir + os.path.basename(data)
             jsdata = None
             if os.path.exists(data):
                 jsfile = open(data, "r")
@@ -1238,7 +1238,7 @@ class Ecu_database:
 
         xmlfile = options.ecus_dir + "/eculist.xml"
 
-        jsonecu_files = glob.glob("./json/*.json.targets")
+        jsonecu_files = glob.glob(options.json_dir + "/*.json.targets")
         for jsonecu_file in jsonecu_files:
             self.numecu += 1
             json_file = open(jsonecu_file, "r")
@@ -1806,7 +1806,7 @@ def make_zipfs():
             # if i == 15:
             #    break
 
-    with open("json/ecus.zip", "wb") as f:
+    with open(options.json_dir + "/ecus.zip", "wb") as f:
         f.write(zipoutput.getvalue())
 
 

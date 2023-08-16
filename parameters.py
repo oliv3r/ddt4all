@@ -266,7 +266,7 @@ class paramWidget(widgets.QWidget):
     def saveEcu(self, name=None):
         if not name:
             filename_tuple = widgets.QFileDialog.getSaveFileName(self, _("Save ECU (keep '.json' extension)"),
-                                                                 "./json/myecu.json", "*.json")
+                                                                 options.json_dir + "/myecu.json", "*.json")
 
             filename = str(filename_tuple[0])
 
@@ -734,8 +734,8 @@ class paramWidget(widgets.QWidget):
 
     def initJSON(self):
         self.layoutdict = None
-        layoutfile = "./json/" + os.path.basename(self.ddtfile) + ".layout"
-        targetsfile = "./json/" + os.path.basename(self.ddtfile) + ".targets"
+        layoutfile = options.json_dir + os.path.basename(self.ddtfile) + ".layout"
+        targetsfile = options.json_dir + os.path.basename(self.ddtfile) + ".targets"
         if os.path.exists(layoutfile):
             jsfile = open(layoutfile, "r")
             jsondata = jsfile.read()
@@ -1746,7 +1746,7 @@ def zipConvertXML(dbfilename="ecu.zip"):
 
     ecus_glob = glob.glob("ecus/*.xml")
     imgs = []
-    if os.path.exists("./graphics"):
+    if os.path.exists(options.graphics_dir):
         for dirpath, dirs, files in os.walk("graphics/"):
             for file in files:
                 if ".gif" in file.lower():
