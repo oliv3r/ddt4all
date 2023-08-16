@@ -9,7 +9,7 @@ import re
 import string
 import xml.dom.minidom
 import zipfile
-from io import StringIO
+from io import BytesIO, StringIO
 
 import elm
 import json
